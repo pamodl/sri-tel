@@ -1,3 +1,11 @@
 com\sricare\userservice\UserServiceApplication.class
+com\sricare\userservice\jwt\JwtTokenProvider.class
+com\sricare\userservice\repository\UserRepository.class
+com\sricare\userservice\dto\AuthResponse.class
 com\sricare\userservice\controller\UserController.class
+com\sricare\userservice\dto\LoginRequest.class
+com\sricare\userservice\dto\RegisterRequest.class
+com\sricare\userservice\config\SecurityConfig.class
 com\sricare\userservice\model\User.class
+com\sricare\userservice\jwt\JwtAuthenticationFilter.class
+com\sricare\userservice\entity\User.class

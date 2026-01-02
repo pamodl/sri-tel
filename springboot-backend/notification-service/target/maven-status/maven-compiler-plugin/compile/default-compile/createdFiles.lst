@@ -1,2 +1,5 @@
-com\sricare\notificationservice\NotificationServiceApplication.class
 com\sricare\notificationservice\controller\NotificationController.class
+com\sricare\notificationservice\amqp\AmqpConfig.class
+com\sricare\notificationservice\amqp\NotificationListener.class
+com\sricare\notificationservice\amqp\NotificationMessage.class
+com\sricare\notificationservice\NotificationServiceApplication.class

@@ -1,3 +1,11 @@
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\user-service\src\main\java\com\sricare\userservice\dto\RegisterRequest.java
 C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\user-service\src\main\java\com\sricare\userservice\controller\UserController.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\user-service\src\main\java\com\sricare\userservice\config\SecurityConfig.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\user-service\src\main\java\com\sricare\userservice\dto\LoginRequest.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\user-service\src\main\java\com\sricare\userservice\jwt\JwtAuthenticationFilter.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\user-service\src\main\java\com\sricare\userservice\dto\AuthResponse.java
 C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\user-service\src\main\java\com\sricare\userservice\model\User.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\user-service\src\main\java\com\sricare\userservice\entity\User.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\user-service\src\main\java\com\sricare\userservice\jwt\JwtTokenProvider.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\user-service\src\main\java\com\sricare\userservice\repository\UserRepository.java
 C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\user-service\src\main\java\com\sricare\userservice\UserServiceApplication.java

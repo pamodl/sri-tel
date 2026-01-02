@@ -1,2 +1,5 @@
 C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\notification-service\src\main\java\com\sricare\notificationservice\NotificationServiceApplication.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\notification-service\src\main\java\com\sricare\notificationservice\amqp\NotificationListener.java
 C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\notification-service\src\main\java\com\sricare\notificationservice\controller\NotificationController.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\notification-service\src\main\java\com\sricare\notificationservice\amqp\AmqpConfig.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\notification-service\src\main\java\com\sricare\notificationservice\amqp\NotificationMessage.java

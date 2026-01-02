@@ -1,2 +1,4 @@
+com\sricare\paymentservice\amqp\AmqpConfig.class
+com\sricare\paymentservice\amqp\NotificationMessage.class
 com\sricare\paymentservice\PaymentServiceApplication.class
 com\sricare\paymentservice\controller\PaymentController.class

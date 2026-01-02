@@ -1,3 +1,5 @@
 com\sricare\billingservice\BillingServiceApplication.class
 com\sricare\billingservice\model\Bill.class
+com\sricare\billingservice\repository\BillRepository.class
 com\sricare\billingservice\controller\BillingController.class
+com\sricare\billingservice\entity\Bill.class

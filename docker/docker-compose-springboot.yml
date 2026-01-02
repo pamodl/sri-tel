@@ -40,6 +40,18 @@ services:
       - SPRING_PROFILES_ACTIVE=dev
     depends_on:
       - db
+  payment-gateway:
+    build: ../mocks/payment-gateway
+    ports:
+      - "4000:4000"
+    environment:
+      - NODE_ENV=development
+  provisioning-system:
+    build: ../mocks/provisioning-system
+    ports:
+      - "4001:4000"
+    environment:
+      - NODE_ENV=development
   db:
     image: postgres:14
     restart: always
@@ -51,6 +63,8 @@ services:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/01-init.sql
+      - ./seed-data.sql:/docker-entrypoint-initdb.d/02-seed.sql
   rabbitmq:
     image: rabbitmq:3-management
     ports:

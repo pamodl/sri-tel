@@ -1,2 +1,4 @@
 com\sricare\servicemanagementservice\ServiceManagementServiceApplication.class
+com\sricare\servicemanagementservice\amqp\NotificationMessage.class
+com\sricare\servicemanagementservice\amqp\AmqpConfig.class
 com\sricare\servicemanagementservice\controller\ServiceController.class

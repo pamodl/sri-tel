@@ -1,64 +1,101 @@
 package com.sricare.userservice.controller;
 
-import com.sricare.userservice.model.User;
+import com.sricare.userservice.dto.AuthResponse;
+import com.sricare.userservice.dto.LoginRequest;
+import com.sricare.userservice.dto.RegisterRequest;
+import com.sricare.userservice.entity.User;
+import com.sricare.userservice.jwt.JwtTokenProvider;
+import com.sricare.userservice.repository.UserRepository;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final Map<String, User> users = new ConcurrentHashMap<>();
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider tokenProvider;
+
+    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtTokenProvider tokenProvider) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.tokenProvider = tokenProvider;
+    }
 
     @PostMapping("/register")
-    public ResponseEntity<User> register(@RequestBody User user) {
-        String id = UUID.randomUUID().toString();
-        user.setId(id);
-        users.put(id, user);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<?> register(@RequestBody RegisterRequest req) {
+        if (userRepository.findByUsername(req.getUsername()).isPresent()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Username already exists"));
+        }
+        if (userRepository.findByEmail(req.getEmail()).isPresent()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Email already exists"));
+        }
+
+        User user = new User();
+        user.setUsername(req.getUsername());
+        user.setEmail(req.getEmail());
+        user.setPasswordHash(passwordEncoder.encode(req.getPassword()));
+        user.setFirstName(req.getFirstName());
+        user.setLastName(req.getLastName());
+        user.setPhoneNumber(req.getPhoneNumber());
+
+        userRepository.save(user);
+        return ResponseEntity.ok(Map.of("message", "User registered successfully", "username", user.getUsername()));
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody Map<String, String> body) {
-        String phone = body.get("phone");
-        String password = body.get("password");
-        for (User u : users.values()) {
-            if (u.getPhone() != null && u.getPhone().equals(phone) && u.getPassword().equals(password)) {
-                return ResponseEntity.ok("token-" + u.getId());
-            }
+    public ResponseEntity<?> login(@RequestBody LoginRequest req) {
+        var user = userRepository.findByUsername(req.getUsername());
+        if (user.isEmpty() || !passwordEncoder.matches(req.getPassword(), user.get().getPasswordHash())) {
+            return ResponseEntity.status(401).body(Map.of("error", "Invalid username or password"));
         }
-        return ResponseEntity.status(401).body("Invalid credentials");
+
+        User u = user.get();
+        String token = tokenProvider.generateToken(u.getUsername());
+        return ResponseEntity.ok(new AuthResponse(token, u.getUsername(), u.getEmail()));
     }
 
     @PostMapping("/password/reset")
-    public ResponseEntity<String> resetPassword(@RequestBody Map<String, String> body) {
-        String phone = body.get("phone");
-        for (User u : users.values()) {
-            if (u.getPhone() != null && u.getPhone().equals(phone)) {
-                // In real app send OTP; here return a fake token
-                return ResponseEntity.ok("reset-token-for-" + u.getId());
-            }
+    public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> body) {
+        String email = body.get("email");
+        var user = userRepository.findByEmail(email);
+        if (user.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "Email not found"));
         }
-        return ResponseEntity.badRequest().body("Phone not found");
+        // TODO: Send OTP via email; for now, return success
+        return ResponseEntity.ok(Map.of("message", "Reset link sent to email"));
     }
 
-    @PutMapping("/password/change")
-    public ResponseEntity<String> changePassword(@RequestBody Map<String, String> body) {
-        String id = body.get("id");
-        String newPass = body.get("password");
-        User u = users.get(id);
-        if (u == null) return ResponseEntity.badRequest().body("User not found");
-        u.setPassword(newPass);
-        return ResponseEntity.ok("Password updated");
+    @PostMapping("/password/change")
+    public ResponseEntity<?> changePassword(@RequestBody Map<String, String> body) {
+        String username = body.get("username");
+        String oldPassword = body.get("oldPassword");
+        String newPassword = body.get("newPassword");
+
+        var user = userRepository.findByUsername(username);
+        if (user.isEmpty()) {
+            return ResponseEntity.badRequest().body(Map.of("error", "User not found"));
+        }
+
+        User u = user.get();
+        if (!passwordEncoder.matches(oldPassword, u.getPasswordHash())) {
+            return ResponseEntity.status(401).body(Map.of("error", "Old password is incorrect"));
+        }
+
+        u.setPasswordHash(passwordEncoder.encode(newPassword));
+        userRepository.save(u);
+        return ResponseEntity.ok(Map.of("message", "Password changed successfully"));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> getUser(@PathVariable String id) {
-        User u = users.get(id);
-        if (u == null) return ResponseEntity.notFound().build();
-        return ResponseEntity.ok(u);
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
+        var user = userRepository.findById(id);
+        if (user.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user.get());
     }
 }
