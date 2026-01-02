@@ -1,0 +1,3 @@
+com\sricare\userservice\UserServiceApplication.class
+com\sricare\userservice\controller\UserController.class
+com\sricare\userservice\model\User.class
