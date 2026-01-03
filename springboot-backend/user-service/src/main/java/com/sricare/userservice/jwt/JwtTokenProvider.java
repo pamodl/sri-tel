@@ -12,7 +12,7 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
-    @Value("${jwt.secret:sricare-secret-key-for-testing-only-change-in-production-12345}")
+    @Value("${jwt.secret:sricare-secret-key-for-testing-only-change-in-production-12345-must-be-very-long-for-hs512}")
     private String jwtSecret;
 
     @Value("${jwt.expiration:86400000}")
