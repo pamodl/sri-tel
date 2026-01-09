@@ -1,4 +1,7 @@
 C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\service-management-service\src\main\java\com\sricare\servicemanagementservice\ServiceManagementServiceApplication.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\service-management-service\src\main\java\com\sricare\servicemanagementservice\dto\ServiceDTO.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\service-management-service\src\main\java\com\sricare\servicemanagementservice\repository\ServiceRepository.java
 C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\service-management-service\src\main\java\com\sricare\servicemanagementservice\amqp\AmqpConfig.java
 C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\service-management-service\src\main\java\com\sricare\servicemanagementservice\controller\ServiceController.java
+C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\service-management-service\src\main\java\com\sricare\servicemanagementservice\entity\Service.java
 C:\Users\Lakshan\Desktop\cs_spc_4_2\SOC\assignment sri tel\springboot-backend\service-management-service\src\main\java\com\sricare\servicemanagementservice\amqp\NotificationMessage.java

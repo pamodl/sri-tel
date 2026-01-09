@@ -16,3 +16,10 @@ INSERT INTO bills (user_id, bill_amount, bill_date, due_date, status, descriptio
 (3, 1200.00, '2024-12-01', '2024-12-15', 'OVERDUE', 'Monthly Bill - December 2024'),
 (3, 1200.00, '2024-11-01', '2024-11-15', 'PAID', 'Monthly Bill - November 2024')
 ON CONFLICT DO NOTHING;
+-- Seed services data (initial services for user 1)
+INSERT INTO services (user_id, name, status) VALUES
+(1, 'International Roaming', 'active'),
+(1, 'Data Top-up', 'inactive'),
+(1, 'Ring Tone Personalization', 'active'),
+(1, 'Premium Voice', 'inactive')
+ON CONFLICT (user_id, name) DO NOTHING;

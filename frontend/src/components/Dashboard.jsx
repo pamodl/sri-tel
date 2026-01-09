@@ -12,12 +12,7 @@ export default function Dashboard() {
   const [selectedBill, setSelectedBill] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState('');
   const [loading, setLoading] = useState(true);
-  const [services, setServices] = useState([
-    { id: 1, name: 'International Roaming', status: 'active' },
-    { id: 2, name: 'Data Top-up', status: 'inactive' },
-    { id: 3, name: 'Ring Tone Personalization', status: 'active' },
-    { id: 4, name: 'Premium Voice', status: 'inactive' }
-  ]);
+  const [services, setServices] = useState([]);
   const [chatMessages, setChatMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
   const [activeTab, setActiveTab] = useState('bills');
@@ -30,6 +25,7 @@ export default function Dashboard() {
       return;
     }
     fetchBills();
+    fetchServices();
   }, [token]);
 
   const fetchBills = async () => {
@@ -44,6 +40,18 @@ export default function Dashboard() {
       setBills([]);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchServices = async () => {
+    try {
+      const response = await axios.get(`${SERVICE_API_URL}/services/user/1`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setServices(response.data);
+    } catch (error) {
+      console.error('Failed to fetch services:', error);
+      setServices([]);
     }
   };
 
@@ -80,14 +88,11 @@ export default function Dashboard() {
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
-      // Update local service status
-      setServices(services.map(s =>
-        s.id === service.id
-          ? { ...s, status: action === 'activate' ? 'active' : 'inactive' }
-          : s
-      ));
       setPaymentStatus(`Service ${service.name} ${action}d successfully!`);
       setTimeout(() => setPaymentStatus(''), 3000);
+      
+      // Refetch services to get updated status
+      fetchServices();
     } catch (error) {
       setPaymentStatus(`Failed to ${action} service: ${error.response?.data?.error || error.message}`);
     }

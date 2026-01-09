@@ -27,6 +27,18 @@ CREATE TABLE IF NOT EXISTS bills (
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+-- Services table
+CREATE TABLE IF NOT EXISTS services (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id),
+    UNIQUE(user_id, name)
+);
+
 -- Chat Messages table
 CREATE TABLE IF NOT EXISTS chat_messages (
     id BIGSERIAL PRIMARY KEY,
@@ -42,5 +54,4 @@ CREATE INDEX IF NOT EXISTS idx_bills_user_id ON bills(user_id);
 CREATE INDEX IF NOT EXISTS idx_bills_status ON bills(status);
 CREATE INDEX IF NOT EXISTS idx_users_username ON users(username);
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
-CREATE INDEX IF NOT EXISTS idx_chat_username ON chat_messages(username);
-CREATE INDEX IF NOT EXISTS idx_chat_conversation ON chat_messages(conversation_id);
+CREATE INDEX IF NOT EXISTS idx_services_user_id ON services(user_id);
