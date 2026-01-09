@@ -5,6 +5,7 @@ import com.sricare.billingservice.repository.BillRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
 import java.util.*;
 
 @RestController
@@ -31,5 +32,20 @@ public class BillingController {
     @GetMapping
     public ResponseEntity<List<Bill>> getAll() {
         return ResponseEntity.ok(billRepository.findAll());
+    }
+
+    @PutMapping("/{billId}/pay")
+    public ResponseEntity<?> payBill(@PathVariable Long billId) {
+        Optional<Bill> optBill = billRepository.findById(billId);
+        if (optBill.isEmpty()) {
+            return ResponseEntity.status(404).body(Map.of("error", "Bill not found"));
+        }
+
+        Bill bill = optBill.get();
+        bill.setStatus("PAID");
+        bill.setPaidDate(Instant.now());
+        billRepository.save(bill);
+
+        return ResponseEntity.ok(Map.of("message", "Bill marked as paid", "billId", billId, "status", "PAID"));
     }
 }

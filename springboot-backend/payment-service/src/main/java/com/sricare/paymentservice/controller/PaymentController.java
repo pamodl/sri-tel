@@ -14,6 +14,7 @@ import java.util.Map;
 public class PaymentController {
     private final RestTemplate rest = new RestTemplate();
     private final String paymentGatewayUrl = "http://payment-gateway:4000/pay"; // when run in docker
+    private final String billingServiceUrl = "http://billing-service:8080"; // billing service
     private final RabbitTemplate rabbitTemplate;
 
     public PaymentController(RabbitTemplate rabbitTemplate) {
@@ -24,6 +25,16 @@ public class PaymentController {
     public ResponseEntity<?> pay(@RequestBody Map<String, Object> body) {
         try {
             Object resp = rest.postForObject(paymentGatewayUrl, body, Object.class);
+
+            // Mark bill as paid in billing service
+            Long billId = body.containsKey("billId") ? Long.parseLong(body.get("billId").toString()) : null;
+            if (billId != null) {
+                try {
+                    rest.put(billingServiceUrl + "/bills/" + billId + "/pay", null);
+                } catch (Exception e) {
+                    System.err.println("Warning: Could not update bill status: " + e.getMessage());
+                }
+            }
 
             // publish notification about successful payment
             String user = body.containsKey("userId") ? body.get("userId").toString() : "unknown";
@@ -44,3 +55,4 @@ public class PaymentController {
         }
     }
 }
+
