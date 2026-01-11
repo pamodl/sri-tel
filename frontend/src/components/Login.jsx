@@ -1,12 +1,40 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './Auth.css';
+import {
+  Box,
+  Button,
+  Container,
+  TextField,
+  Typography,
+  Paper,
+  Alert,
+  CircularProgress,
+  Link,
+  CssBaseline,
+} from '@mui/material';
+import { Login as LoginIcon } from '@mui/icons-material';
+import { styled } from '@mui/material/styles';
 
 const API_URL = 'http://localhost:8081';
+
+const StyledContainer = styled(Container)(({ theme }) => ({
+  minHeight: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  background: `linear-gradient(135deg, ${theme.palette.primary.main} 0%, ${theme.palette.primary.dark} 100%)`,
+}));
+
+const StyledPaper = styled(Paper)(({ theme }) => ({
+  padding: theme.spacing(4),
+  borderRadius: theme.spacing(2),
+  boxShadow: theme.shadows[10],
+}));
 
 export default function Login() {
   const [formData, setFormData] = useState({ username: '', password: '' });
   const [message, setMessage] = useState('');
+  const [messageType, setMessageType] = useState('');
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -21,9 +49,11 @@ export default function Login() {
       const response = await axios.post(`${API_URL}/users/login`, formData);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('username', response.data.username);
+      setMessageType('success');
       setMessage('Login successful! Redirecting...');
       setTimeout(() => window.location.href = '/dashboard', 2000);
     } catch (error) {
+      setMessageType('error');
       setMessage(`Error: ${error.response?.data?.error || 'Login failed'}`);
     } finally {
       setLoading(false);
@@ -31,21 +61,78 @@ export default function Login() {
   };
 
   return (
-    <div className="auth-container">
-      <h2>Sri-Care Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label>Username:</label>
-          <input type="text" name="username" placeholder="Your username" onChange={handleChange} required />
-        </div>
-        <div className="form-group">
-          <label>Password:</label>
-          <input type="password" name="password" placeholder="Your password" onChange={handleChange} required />
-        </div>
-        <button type="submit" disabled={loading}>{loading ? 'Logging in...' : 'Login'}</button>
-      </form>
-      {message && <p className={message.includes('Error') ? 'error' : 'success'}>{message}</p>}
-      <p>Don't have an account? <a href="/register">Register here</a></p>
-    </div>
+    <>
+      <CssBaseline />
+      <StyledContainer maxWidth="sm">
+        <StyledPaper>
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <LoginIcon sx={{ fontSize: 40, color: 'primary.main', mb: 2 }} />
+            <Typography variant="h4" sx={{ fontWeight: 700, mb: 1 }}>
+              Sri-Care
+            </Typography>
+            <Typography variant="subtitle1" color="textSecondary">
+              Telecom Support & Billing System
+            </Typography>
+          </Box>
+
+          {message && (
+            <Alert severity={messageType} sx={{ mb: 3 }}>
+              {message}
+            </Alert>
+          )}
+
+          <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <TextField
+              fullWidth
+              label="Username"
+              name="username"
+              placeholder="Enter your username"
+              onChange={handleChange}
+              required
+              variant="outlined"
+              disabled={loading}
+            />
+            <TextField
+              fullWidth
+              label="Password"
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+              onChange={handleChange}
+              required
+              variant="outlined"
+              disabled={loading}
+            />
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              size="large"
+              disabled={loading}
+              sx={{ mt: 2, py: 1.5, fontWeight: 700 }}
+            >
+              {loading ? <CircularProgress size={24} /> : 'Login'}
+            </Button>
+          </Box>
+
+          <Box sx={{ mt: 4, textAlign: 'center' }}>
+            <Typography variant="body2" color="textSecondary">
+              Don't have an account?{' '}
+              <Link
+                href="/register"
+                sx={{
+                  color: 'primary.main',
+                  textDecoration: 'none',
+                  fontWeight: 700,
+                  '&:hover': { textDecoration: 'underline' },
+                }}
+              >
+                Register here
+              </Link>
+            </Typography>
+          </Box>
+        </StyledPaper>
+      </StyledContainer>
+    </>
   );
 }
