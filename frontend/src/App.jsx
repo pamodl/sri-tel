@@ -6,6 +6,7 @@ import theme from './theme';
 import Login from './components/Login';
 import Register from './components/Register';
 import Dashboard from './components/Dashboard';
+import Terms from './components/Terms';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/terms" element={<Terms />} />
         </Routes>
       </Router>
     </ThemeProvider>

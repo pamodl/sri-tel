@@ -131,6 +131,20 @@ export default function Login() {
               </Link>
             </Typography>
           </Box>
+
+          <Box sx={{ mt: 2, textAlign: 'center' }}>
+            <Link 
+              href="/terms" 
+              variant="body2" 
+              sx={{ 
+                color: 'text.secondary', 
+                textDecoration: 'none',
+                '&:hover': { color: 'primary.main', textDecoration: 'underline' } 
+              }}
+            >
+              Terms of Service
+            </Link>
+          </Box>
         </StyledPaper>
       </StyledContainer>
     </>
