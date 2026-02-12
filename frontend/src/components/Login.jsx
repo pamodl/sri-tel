@@ -49,6 +49,7 @@ export default function Login() {
       const response = await axios.post(`${API_URL}/users/login`, formData);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('username', response.data.username);
+      localStorage.setItem('userId', response.data.userId || response.data.id || '1'); // Store userId too
       setMessageType('success');
       setMessage('Login successful! Redirecting...');
       setTimeout(() => window.location.href = '/dashboard', 2000);

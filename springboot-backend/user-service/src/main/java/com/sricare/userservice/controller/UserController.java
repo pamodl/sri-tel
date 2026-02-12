@@ -55,7 +55,7 @@ public class UserController {
 
         User u = user.get();
         String token = tokenProvider.generateToken(u.getUsername());
-        return ResponseEntity.ok(new AuthResponse(token, u.getUsername(), u.getEmail()));
+        return ResponseEntity.ok(new AuthResponse(token, u.getUsername(), u.getEmail(), u.getId()));
     }
 
     @PostMapping("/password/reset")
