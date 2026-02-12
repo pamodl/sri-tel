@@ -155,6 +155,7 @@ export default function Dashboard() {
   const [paymentDialogOpen, setPaymentDialogOpen] = useState(false);
   const username = localStorage.getItem('username');
   const token = localStorage.getItem('token');
+  const userId = localStorage.getItem('userId') || '1'; // Get actual userId, default to 1
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
@@ -168,7 +169,7 @@ export default function Dashboard() {
 
   const fetchBills = async () => {
     try {
-      const response = await axios.get(`${BILL_API_URL}/bills/1`, {
+      const response = await axios.get(`${BILL_API_URL}/bills/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setBills(response.data);
@@ -182,7 +183,7 @@ export default function Dashboard() {
 
   const fetchServices = async () => {
     try {
-      const response = await axios.get(`${SERVICE_API_URL}/services/user/1`, {
+      const response = await axios.get(`${SERVICE_API_URL}/services/user/${userId}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setServices(response.data);
@@ -197,7 +198,7 @@ export default function Dashboard() {
     try {
       await axios.post(`${PAYMENT_API_URL}/payments/pay`, {
         billId: billId,
-        userId: 1,
+        userId: parseInt(userId),
         amount: selectedBill.amount,
         cardToken: 'test-token-12345'
       }, {
@@ -214,6 +215,7 @@ export default function Dashboard() {
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    localStorage.removeItem('userId');
     window.location.href = '/login';
   };
 
@@ -222,7 +224,7 @@ export default function Dashboard() {
     try {
       await axios.post(
         `${SERVICE_API_URL}/services/${action}`,
-        { userId: 1, service: service.name },
+        { userId: parseInt(userId), service: service.name },
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setPaymentStatus(`Service ${service.name} ${action}d successfully!`);
